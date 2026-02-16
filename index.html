@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>القدرات اللفظي - 55 نموذج</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+        * { font-family: 'Tajawal', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .nav-item { transition: all 0.2s ease; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .question-card { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .progress-bar { transition: width 0.5s ease; }
+        .option-btn { transition: all 0.2s ease; }
+        .option-btn:hover:not(.selected):not(.correct):not(.wrong) { background: #e8f4fd; border-color: #3b82f6; }
+        .correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+        .wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        .selected { background: #dbeafe !important; border-color: #3b82f6 !important; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        .toast { animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-slate-50 overflow-auto">
+  <div id="app" class="min-h-full w-full">
+   <!-- Toast Notification -->
+   <div id="toast" class="hidden fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg toast z-50"></div><!-- Navigation -->
+   <nav class="gradient-bg text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+     <div class="flex items-center justify-between">
+      <h1 id="site-title" class="text-2xl font-bold cursor-pointer" onclick="showSection('home')">📚 القدرات اللفظي</h1>
+      <div class="hidden md:flex gap-2">
+       <button onclick="showSection('home')" class="nav-item px-4 py-2 rounded-lg">الرئيسية</button> <button onclick="showSection('explanation')" class="nav-item px-4 py-2 rounded-lg">الشرح</button> <button onclick="showSection('models')" class="nav-item px-4 py-2 rounded-lg">النماذج</button> <button onclick="showSection('results-view')" class="nav-item px-4 py-2 rounded-lg">النتائج</button> <button onclick="showSection('tips')" class="nav-item px-4 py-2 rounded-lg">نصائح</button>
+      </div><button onclick="toggleMobileMenu()" class="md:hidden text-2xl">☰</button>
+     </div>
+     <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col gap-2">
+      <button onclick="showSection('home'); toggleMobileMenu()" class="nav-item px-4 py-2 rounded-lg text-right">الرئيسية</button> <button onclick="showSection('explanation'); toggleMobileMenu()" class="nav-item px-4 py-2 rounded-lg text-right">الشرح</button> <button onclick="showSection('models'); toggleMobileMenu()" class="nav-item px-4 py-2 rounded-lg text-right">النماذج</button> <button onclick="showSection('results-view'); toggleMobileMenu()" class="nav-item px-4 py-2 rounded-lg text-right">النتائج</button> <button onclick="showSection('tips'); toggleMobileMenu()" class="nav-item px-4 py-2 rounded-lg text-right">نصائح</button>
+     </div>
+    </div>
+   </nav><!-- Home Section -->
+   <section id="home-section" class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div id="student-info" class="text-center mb-12 p-6 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl">
+      <p class="text-lg text-slate-700"><span class="font-bold text-blue-600">أهلاً بك: <span id="display-name" class="text-2xl">الطالب</span></span></p><button onclick="editStudentName()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">✏️ تعديل الاسم</button>
+     </div>
+     <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-slate-800 mb-4">مرحباً بك في منصة القدرات اللفظي</h2>
+      <p class="text-xl text-slate-600 max-w-2xl mx-auto">منصة شاملة للتحضير لاختبار القدرات العامة - القسم اللفظي مع 55 نموذج تدريبي متنوع</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-blue-500">
+       <div class="text-4xl mb-4">
+        📖
+       </div>
+       <h3 class="text-xl font-bold text-slate-800 mb-2">شرح مفصل</h3>
+       <p class="text-slate-600">شرح شامل لجميع أنواع الأسئلة اللفظية مع أمثلة توضيحية</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-green-500">
+       <div class="text-4xl mb-4">
+        📝
+       </div>
+       <h3 class="text-xl font-bold text-slate-800 mb-2">55 نموذج</h3>
+       <p class="text-slate-600">نماذج متنوعة تغطي جميع أنماط الأسئلة المتكررة والصعبة</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-purple-500">
+       <div class="text-4xl mb-4">
+        💡
+       </div>
+       <h3 class="text-xl font-bold text-slate-800 mb-2">نصائح ذهبية</h3>
+       <p class="text-slate-600">استراتيجيات وتقنيات لتحقيق أعلى الدرجات</p>
+      </div>
+     </div>
+     <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 text-white text-center">
+      <h3 class="text-2xl font-bold mb-4">ابدأ رحلة التحضير الآن!</h3>
+      <p class="mb-6 text-blue-100">اختر من بين 55 نموذج تدريبي واختبر مستواك</p><button onclick="showSection('models')" class="bg-white text-blue-600 px-8 py-3 rounded-xl font-bold hover:bg-blue-50 transition"> ابدأ التدريب ← </button>
+     </div>
+    </div>
+   </section><!-- Student Name Modal -->
+   <div id="name-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+     <h3 class="text-2xl font-bold text-slate-800 mb-4">إدخال الاسم</h3><input type="text" id="name-input" placeholder="أدخل اسمك الكامل" class="w-full px-4 py-3 border-2 border-slate-300 rounded-lg mb-4 focus:outline-none focus:border-blue-500" autocomplete="off">
+     <div class="flex gap-4"><button onclick="saveStudentName()" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-bold">حفظ</button> <button onclick="closeNameModal()" class="flex-1 bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300 transition font-bold">إلغاء</button>
+     </div>
+    </div>
+   </div><!-- Explanation Section -->
+   <section id="explanation-section" class="hidden py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">📖 شرح القسم اللفظي</h2>
+     <div class="space-y-6">
+      <!-- استيعاب المقروء -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="flex items-center gap-3 mb-4">
+        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-xl font-bold">1</span>
+        <h3 class="text-xl font-bold text-slate-800">استيعاب المقروء</h3>
+       </div>
+       <p class="text-slate-600 mb-4">يُعرض عليك نص قصير ثم تُطرح أسئلة حول:</p>
+       <ul class="list-disc list-inside text-slate-600 space-y-2 mr-4">
+        <li>الفكرة الرئيسية للنص</li>
+        <li>معاني الكلمات من السياق</li>
+        <li>استنتاجات من النص</li>
+        <li>موقف الكاتب ورأيه</li>
+       </ul>
+      </div><!-- إكمال الجمل -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="flex items-center gap-3 mb-4">
+        <span class="bg-green-100 text-green-600 px-4 py-2 rounded-xl font-bold">2</span>
+        <h3 class="text-xl font-bold text-slate-800">إكمال الجمل</h3>
+       </div>
+       <p class="text-slate-600 mb-4">جمل ناقصة تحتاج لاختيار الكلمة المناسبة</p>
+       <ul class="list-disc list-inside text-slate-600 space-y-2 mr-4">
+        <li>فهم سياق الجملة</li>
+        <li>معرفة معاني المفردات</li>
+        <li>التمييز بين الكلمات المتشابهة</li>
+       </ul>
+      </div><!-- التناظر اللفظي -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="flex items-center gap-3 mb-4">
+        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-xl font-bold">3</span>
+        <h3 class="text-xl font-bold text-slate-800">التناظر اللفظي</h3>
+       </div>
+       <p class="text-slate-600 mb-4">إيجاد العلاقة بين زوج من الكلمات</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Models Section -->
+   <section id="models-section" class="hidden py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">📝 نماذج الأسئلة</h2>
+     <p class="text-center text-slate-600 mb-8">55 نموذج تدريبي - اختر النموذج الذي تريد التدرب عليه</p>
+     <div id="models-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+    </div>
+   </section><!-- Quiz Section -->
+   <section id="quiz-section" class="hidden py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- Quiz Header -->
+      <div class="gradient-bg text-white p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 id="quiz-title" class="text-xl font-bold">النموذج 1</h3><button onclick="showSection('models')" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"> ← العودة </button>
+       </div>
+       <div class="flex justify-between text-sm mb-2">
+        <span>السؤال <span id="current-q">1</span> من <span id="total-q">10</span></span> <span>الدرجة: <span id="score">0</span></span>
+       </div>
+       <div class="bg-white/20 rounded-full h-3">
+        <div id="progress-bar" class="bg-white rounded-full h-3 progress-bar" style="width: 10%"></div>
+       </div>
+      </div><!-- Question Area -->
+      <div id="question-area" class="p-6"></div><!-- Navigation -->
+      <div class="p-6 bg-slate-50 border-t flex justify-between">
+       <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-xl font-medium hover:bg-slate-300 transition disabled:opacity-50" disabled> ← السابق </button> <button id="next-btn" onclick="nextQuestion()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-medium hover:bg-blue-700 transition"> التالي → </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- Results Section -->
+   <section id="results-section" class="hidden py-12 px-4">
+    <div class="max-w-2xl mx-auto">
+     <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+      <div id="result-icon" class="text-6xl mb-4">
+       🎉
+      </div>
+      <h2 class="text-3xl font-bold text-slate-800 mb-4">أحسنت!</h2>
+      <p class="text-xl text-slate-600 mb-6">لقد أكملت النموذج</p>
+      <div class="bg-slate-100 rounded-2xl p-6 mb-6">
+       <div class="text-5xl font-bold text-blue-600 mb-2">
+        <span id="final-score">0</span>/<span id="final-total">10</span>
+       </div>
+       <p class="text-slate-600">درجتك النهائية</p>
+       <div class="mt-4 bg-slate-200 rounded-full h-4">
+        <div id="result-bar" class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full h-4 transition-all duration-1000" style="width: 0%"></div>
+       </div>
+       <p id="percentage" class="text-lg font-medium text-slate-700 mt-2">0%</p>
+      </div>
+      <div id="result-message" class="text-lg text-slate-600 mb-6"></div>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+       <button onclick="restartQuiz()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition"> 🔄 إعادة النموذج </button> <button onclick="showSection('models')" class="bg-slate-200 text-slate-700 px-6 py-3 rounded-xl font-bold hover:bg-slate-300 transition"> 📝 نماذج أخرى </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- Results View Section -->
+   <section id="results-view-section" class="hidden py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">📊 سجل النتائج</h2>
+     <div id="results-list" class="space-y-4">
+      <div class="text-center text-slate-500 py-12">
+       <p class="text-lg">جاري تحميل النتائج...</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Tips Section -->
+   <section id="tips-section" class="hidden py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">💡 نصائح ذهبية</h2>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
+       <h3 class="text-xl font-bold mb-4">📅 قبل الاختبار</h3>
+       <ul class="space-y-3">
+        <li class="flex gap-2"><span>✓</span> نم جيداً الليلة السابقة</li>
+        <li class="flex gap-2"><span>✓</span> تناول فطوراً صحياً</li>
+        <li class="flex gap-2"><span>✓</span> احضر مبكراً لمركز الاختبار</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-slate-800 text-white py-8 px-4 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+     <p class="text-slate-400">منصة القدرات اللفظي - 55 نموذج تدريبي</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+        const defaultConfig = { site_title: 'القدرات اللفظي' };
+        let config = { ...defaultConfig };
+        let studentName = 'الطالب';
+        let allResults = [];
+
+        let currentModel = 1;
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        const questionsDB = {};
+
+        function generateAllModels() {
+            const questionPools = {
+                analogy: [
+                    { question: 'أب : ابن :: جد : ؟', options: ['حفيد', 'عم', 'خال', 'أخ'], correct: 0 },
+                    { question: 'طبيب : مستشفى :: معلم : ؟', options: ['كتاب', 'مدرسة', 'طالب', 'علم'], correct: 1 },
+                    { question: 'قلم : كتابة :: مفتاح : ؟', options: ['باب', 'فتح', 'حديد', 'قفل'], correct: 1 },
+                    { question: 'سيف : قتال :: قلم : ؟', options: ['حبر', 'ورق', 'كتابة', 'خشب'], correct: 2 },
+                    { question: 'شمس : نهار :: قمر : ؟', options: ['ليل', 'نجوم', 'سماء', 'ضوء'], correct: 0 },
+                    { question: 'عين : رؤية :: أذن : ؟', options: ['وجه', 'سمع', 'صوت', 'كلام'], correct: 1 },
+                    { question: 'سمكة : ماء :: طائر : ؟', options: ['هواء', 'ريش', 'عش', 'طعام'], correct: 0 },
+                    { question: 'كتاب : مكتبة :: سيارة : ؟', options: ['طريق', 'مرآب', 'بنزين', 'سائق'], correct: 1 },
+                    { question: 'نحلة : عسل :: بقرة : ؟', options: ['لحم', 'حليب', 'مزرعة', 'عشب'], correct: 1 },
+                    { question: 'شجرة : غابة :: نجمة : ؟', options: ['سماء', 'مجرة', 'ليل', 'ضوء'], correct: 1 },
+                    { question: 'ورقة : شجرة :: شعر : ؟', options: ['مشط', 'رأس', 'لون', 'قص'], correct: 1 },
+                    { question: 'ثلج : بارد :: نار : ؟', options: ['دخان', 'حطب', 'ساخن', 'ضوء'], correct: 2 },
+                    { question: 'يد : خمسة :: قدم : ؟', options: ['خمسة', 'أربعة', 'حذاء', 'مشي'], correct: 0 },
+                    { question: 'سكين : قطع :: مطرقة : ؟', options: ['حديد', 'مسمار', 'طرق', 'يد'], correct: 2 },
+                    { question: 'ملك : عرش :: قاضي : ؟', options: ['محكمة', 'قانون', 'عدل', 'سجن'], correct: 0 },
+                    { question: 'حبر : قلم :: وقود : ؟', options: ['نار', 'سيارة', 'محطة', 'زيت'], correct: 1 },
+                    { question: 'رأس : جسم :: قمة : ؟', options: ['جبل', 'سهل', 'وادي', 'نهر'], correct: 0 },
+                    { question: 'مفتاح : باب :: زر : ؟', options: ['قميص', 'جهاز', 'يد', 'خيط'], correct: 1 },
+                    { question: 'كاتب : كتاب :: مخترع : ؟', options: ['علم', 'اختراع', 'مختبر', 'فكرة'], correct: 1 },
+                    { question: 'ثور : قرن :: غزال : ؟', options: ['حافر', 'قرن', 'ذيل', 'جلد'], correct: 1 }
+                ],
+                completion: [
+                    { question: 'العلم ........... والجهل ظلام.', options: ['ظلمة', 'نور', 'صعب', 'كثير'], correct: 1 },
+                    { question: 'الصدق ........... والكذب يهدي إلى الفجور.', options: ['يهدي إلى البر', 'صعب', 'نادر', 'مكروه'], correct: 0 },
+                    { question: 'من جدّ ...........، ومن زرع حصد.', options: ['نام', 'وجد', 'تعب', 'فاز'], correct: 1 },
+                    { question: 'الصبر مفتاح ...........، ومن صبر ظفر.', options: ['الباب', 'الفرج', 'النجاح', 'السعادة'], correct: 1 },
+                    { question: 'العقل السليم في الجسم ...........',options: ['القوي', 'السليم', 'الكبير', 'النشيط'], correct: 1 },
+                    { question: 'خير الكلام ما ........... ودل.', options: ['طال', 'كثر', 'قلّ', 'حسن'], correct: 2 },
+                    { question: 'الوقت كالسيف إن لم ........... قطعك.', options: ['تضربه', 'تتركه', 'تقطعه', 'تحفظه'], correct: 2 },
+                    { question: 'إذا كان الكلام من ........... فالسكوت من ذهب.', options: ['فضة', 'حديد', 'نحاس', 'خشب'], correct: 0 },
+                    { question: 'رب أخٍ لك لم ........... أمك.', options: ['تعرف', 'ترى', 'تحب', 'تلده'], correct: 3 },
+                    { question: 'الحاجة أم ...........',options: ['النجاح', 'الاختراع', 'العمل', 'الفكرة'], correct: 1 },
+                    { question: 'من حفر حفرة لأخيه وقع ...........', options: ['معه', 'فيها', 'بعده', 'قربها'], correct: 1 },
+                    { question: 'درهم ........... خير من قنطار علاج.', options: ['وقاية', 'علاج', 'مال', 'ذهب'], correct: 0 },
+                    { question: 'لا تؤجل عمل اليوم إلى ...........',options: ['الأمس', 'الغد', 'العام', 'الشهر'], correct: 1 },
+                    { question: 'في التأني ........... وفي العجلة الندامة.', options: ['السلامة', 'السرعة', 'الخسارة', 'الندم'], correct: 0 },
+                    { question: 'الطيور على ........... تقع.', options: ['الأرض', 'أشكالها', 'الشجر', 'أعشاشها'], correct: 1 },
+                    { question: 'لكل مقالٍ ...........، ولكل زمان رجال.', options: ['كلام', 'مقال', 'حديث', 'قول'], correct: 1 },
+                    { question: 'إذا أردت أن تُطاع فأمر بما ...........', options: ['تريد', 'يُستطاع', 'تحب', 'يصعب'], correct: 1 },
+                    { question: 'لا يلدغ المؤمن من ........... مرتين.', options: ['ثعبان', 'جحر', 'عقرب', 'نحلة'], correct: 1 },
+                    { question: 'الجار قبل ...........', options: ['البيت', 'الدار', 'الطريق', 'السفر'], correct: 1 },
+                    { question: 'رحلة الألف ميل تبدأ ...........', options: ['بالسيارة', 'بخطوة', 'بالتخطيط', 'بالمال'], correct: 1 }
+                ],
+                error: [
+                    { question: 'حدد الخطأ السياقي: "النظافة من الكسل وهي شعار المسلم"', options: ['النظافة', 'الكسل', 'شعار', 'المسلم'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الجهل نور يضيء طريق الإنسان"', options: ['الجهل', 'نور', 'يضيء', 'طريق'], correct: 0 },
+                    { question: 'حدد الخطأ السياقي: "التعاون يضعف المجتمع ويفرق أبناءه"', options: ['التعاون', 'يضعف', 'المجتمع', 'أبناءه'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الماء ضروري لموت الكائنات الحية"', options: ['الماء', 'ضروري', 'لموت', 'الحية'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "التدخين يحسّن صحة الإنسان"', options: ['التدخين', 'يحسّن', 'صحة', 'الإنسان'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الرياضة تضعف الجسم وتهدم الصحة"', options: ['الرياضة', 'تضعف', 'الجسم', 'الصحة'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "العدل أساس الظلم في المجتمع"', options: ['العدل', 'أساس', 'الظلم', 'المجتمع'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "الصدق يفسد العلاقات بين الناس"', options: ['الصدق', 'يفسد', 'العلاقات', 'الناس'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "النوم الكافي يرهق الجسم ويتعبه"', options: ['النوم', 'الكافي', 'يرهق', 'الجسم'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "القراءة تجهّل الإنسان وتضيّق أفقه"', options: ['القراءة', 'تجهّل', 'الإنسان', 'أفقه'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الكرم صفة ذميمة يبغضها الناس"', options: ['الكرم', 'ذميمة', 'يبغضها', 'الناس'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الظلم يدوم ويبقى طويلاً"', options: ['الظلم', 'يدوم', 'يبقى', 'طويلاً'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الشجاعة ضعف في مواجهة الصعاب"', options: ['الشجاعة', 'ضعف', 'مواجهة', 'الصعاب'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "الجبان يواجه المخاطر بشجاعة"', options: ['الجبان', 'يواجه', 'المخاطر', 'بشجاعة'], correct: 0 },
+                    { question: 'حدد الخطأ السياقي: "الشمس تشرق من الغرب كل صباح"', options: ['الشمس', 'تشرق', 'الغرب', 'صباح'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "الجهل يرفع صاحبه درجات"', options: ['الجهل', 'يرفع', 'صاحبه', 'درجات'], correct: 0 },
+                    { question: 'حدد الخطأ السياقي: "الصمت حكمة وقليل فاعله"', options: ['الصمت', 'حكمة', 'قليل', 'فاعله'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "الأمل يقود إلى اليأس والإحباط"', options: ['الأمل', 'يقود', 'اليأس', 'الإحباط'], correct: 2 },
+                    { question: 'حدد الخطأ السياقي: "التواضع يُبعد الناس عنك"', options: ['التواضع', 'يُبعد', 'الناس', 'عنك'], correct: 1 },
+                    { question: 'حدد الخطأ السياقي: "العمل الصالح يُبعد عن الجنة"', options: ['العمل', 'الصالح', 'يُبعد', 'الجنة'], correct: 2 }
+                ],
+                different: [
+                    { question: 'أي كلمة لا تنتمي للمجموعة؟', options: ['تفاحة', 'برتقالة', 'جزرة', 'موزة'], correct: 2 },
+                    { question: 'أي كلمة مختلفة؟', options: ['طبيب', 'مهندس', 'مستشفى', 'معلم'], correct: 2 },
+                    { question: 'حدد المختلف:', options: ['أسد', 'نمر', 'فيل', 'نسر'], correct: 3 },
+                    { question: 'أي كلمة لا تنتمي؟', options: ['سعادة', 'فرح', 'سرور', 'حزن'], correct: 3 },
+                    { question: 'المختلف هو:', options: ['قلم', 'دفتر', 'كتاب', 'تلفاز'], correct: 3 },
+                    { question: 'أي كلمة لا تنتمي للمجموعة؟', options: ['الأحد', 'يناير', 'الاثنين', 'الجمعة'], correct: 1 },
+                    { question: 'حدد الكلمة المختلفة:', options: ['سيارة', 'طائرة', 'دراجة', 'كرسي'], correct: 3 },
+                    { question: 'أي مما يلي لا ينتمي؟', options: ['ذهب', 'فضة', 'حديد', 'خشب'], correct: 3 },
+                    { question: 'الكلمة المختلفة:', options: ['عين', 'أنف', 'يد', 'أذن'], correct: 2 },
+                    { question: 'أي كلمة تختلف؟', options: ['كلب', 'قط', 'حصان', 'سمكة'], correct: 3 },
+                    { question: 'المختلف:', options: ['سمع', 'بصر', 'شم', 'فكر'], correct: 3 },
+                    { question: 'أي كلمة مختلفة؟', options: ['مثلث', 'مربع', 'دائرة', 'خط'], correct: 3 },
+                    { question: 'أي كلمة لا تنتمي؟', options: ['قهوة', 'شاي', 'عصير', 'خبز'], correct: 3 },
+                    { question: 'المختلف:', options: ['سعودية', 'مصر', 'القاهرة', 'الأردن'], correct: 2 },
+                    { question: 'أي كلمة تختلف؟', options: ['ثانية', 'دقيقة', 'متر', 'ساعة'], correct: 2 },
+                    { question: 'أي كلمة تختلف؟', options: ['أذن', 'عين', 'أنف', 'قدم'], correct: 3 },
+                    { question: 'المختلف:', options: ['محيط', 'بحر', 'نهر', 'جبل'], correct: 3 },
+                    { question: 'أي كلمة لا تنتمي؟', options: ['سباحة', 'جري', 'قراءة', 'كرة قدم'], correct: 2 },
+                    { question: 'المختلف:', options: ['شمال', 'جنوب', 'فوق', 'شرق'], correct: 2 },
+                    { question: 'أي كلمة تختلف؟', options: ['فرح', 'سرور', 'بهجة', 'كآبة'], correct: 3 }
+                ]
+            };
+
+            for (let i = 1; i <= 55; i++) {
+                questionsDB[i] = [];
+                const modelType = ((i - 1) % 6) + 1;
+                
+                if (modelType === 1) {
+                    for (let j = 0; j < 10; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.analogy[(i + j) % questionPools.analogy.length])));
+                    }
+                } else if (modelType === 2) {
+                    for (let j = 0; j < 10; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.completion[(i + j) % questionPools.completion.length])));
+                    }
+                } else if (modelType === 3) {
+                    for (let j = 0; j < 10; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.error[(i + j) % questionPools.error.length])));
+                    }
+                } else if (modelType === 4) {
+                    for (let j = 0; j < 10; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.different[(i + j) % questionPools.different.length])));
+                    }
+                } else if (modelType === 5) {
+                    for (let j = 0; j < 5; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.analogy[(i + j) % questionPools.analogy.length])));
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.completion[(i + j) % questionPools.completion.length])));
+                    }
+                } else {
+                    for (let j = 0; j < 3; j++) {
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.analogy[(i + j) % questionPools.analogy.length])));
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.completion[(i + j) % questionPools.completion.length])));
+                        questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.error[(i + j) % questionPools.error.length])));
+                    }
+                    questionsDB[i].push(JSON.parse(JSON.stringify(questionPools.different[i % questionPools.different.length])));
+                }
+            }
+        }
+
+        generateAllModels();
+
+        function showSection(section) {
+            const sections = ['home', 'explanation', 'models', 'quiz', 'results', 'results-view', 'tips'];
+            sections.forEach(s => {
+                document.getElementById(`${s}-section`).classList.add('hidden');
+            });
+            document.getElementById(`${section}-section`).classList.remove('hidden');
+            
+            if (section === 'results-view') {
+                loadResults();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function editStudentName() {
+            document.getElementById('name-input').value = studentName;
+            document.getElementById('name-modal').classList.remove('hidden');
+            document.getElementById('name-input').focus();
+        }
+
+        function saveStudentName() {
+            const name = document.getElementById('name-input').value.trim();
+            if (name) {
+                studentName = name;
+                document.getElementById('display-name').textContent = studentName;
+                closeNameModal();
+                showToast('تم حفظ الاسم بنجاح ✓');
+            }
+        }
+
+        function closeNameModal() {
+            document.getElementById('name-modal').classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        document.getElementById('name-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveStudentName();
+        });
+
+        function generateModelsGrid() {
+            const grid = document.getElementById('models-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= 55; i++) {
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-lg p-3 shadow-md card-hover cursor-pointer border-2 border-transparent hover:border-blue-400 text-center`;
+                card.innerHTML = `
+                    <div class="text-2xl font-bold text-blue-600 mb-1">${i}</div>
+                    <div class="text-xs text-slate-500">نموذج</div>
+                `;
+                card.onclick = () => startQuiz(i);
+                grid.appendChild(card);
+            }
+        }
+
+        function startQuiz(modelNum) {
+            currentModel = modelNum;
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            questions = questionsDB[modelNum] || questionsDB[1];
+            
+            document.getElementById('quiz-title').textContent = `النموذج ${modelNum}`;
+            document.getElementById('total-q').textContent = questions.length;
+            
+            showSection('quiz');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            const area = document.getElementById('question-area');
+            
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('score').textContent = score;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            
+            let html = '<div class="question-card">';
+            html += `<h4 class="text-xl font-bold text-slate-800 mb-6">${q.question}</h4>`;
+            html += '<div class="space-y-3">';
+            
+            q.options.forEach((opt, idx) => {
+                const letter = ['أ', 'ب', 'ج', 'د'][idx];
+                const isAnswered = userAnswers[currentQuestion] !== undefined;
+                const isSelected = userAnswers[currentQuestion] === idx;
+                const isCorrect = idx === q.correct;
+                
+                let btnClass = 'option-btn w-full text-right p-4 rounded-xl border-2 transition flex items-center gap-3';
+                
+                if (isAnswered) {
+                    if (isCorrect) {
+                        btnClass += ' correct';
+                    } else if (isSelected) {
+                        btnClass += ' wrong';
+                    } else {
+                        btnClass += ' border-slate-200 bg-white opacity-50';
+                    }
+                } else {
+                    btnClass += ' border-slate-200 bg-white hover:border-blue-400 cursor-pointer';
+                }
+                
+                html += `
+                    <button class="${btnClass}" onclick="selectAnswer(${idx})" ${isAnswered ? 'disabled' : ''}>
+                        <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600">${letter}</span>
+                        <span class="flex-1">${opt}</span>
+                        ${isAnswered && isCorrect ? '<span class="text-green-600">✓</span>' : ''}
+                        ${isAnswered && isSelected && !isCorrect ? '<span class="text-red-600">✗</span>' : ''}
+                    </button>
+                `;
+            });
+            html += '</div></div>';
+            
+            area.innerHTML = html;
+            
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').textContent = currentQuestion === questions.length - 1 ? 'إنهاء' : 'التالي →';
+        }
+
+        function selectAnswer(idx) {
+            if (userAnswers[currentQuestion] !== undefined) return;
+            
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                score++;
+            }
+            
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === undefined) {
+                showToast('الرجاء اختيار إجابة');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        async function showResults() {
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-total').textContent = questions.length;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            
+            setTimeout(() => {
+                document.getElementById('result-bar').style.width = `${percentage}%`;
+            }, 100);
+            
+            let icon, message;
+            if (percentage >= 90) {
+                icon = '🏆';
+                message = 'ممتاز! أداء رائع!';
+            } else if (percentage >= 70) {
+                icon = '🎉';
+                message = 'جيد جداً! أنت في الطريق الصحيح!';
+            } else if (percentage >= 50) {
+                icon = '💪';
+                message = 'جيد! تحتاج لمزيد من التدريب.';
+            } else {
+                icon = '📚';
+                message = 'راجع الشرح وحاول مرة أخرى!';
+            }
+            
+            document.getElementById('result-icon').textContent = icon;
+            document.getElementById('result-message').textContent = message;
+            
+            // حفظ النتيجة في Data SDK
+            if (window.dataSdk) {
+                const result = await window.dataSdk.create({
+                    student_name: studentName,
+                    model_number: currentModel.toString(),
+                    score: score.toString(),
+                    percentage: percentage.toString(),
+                    completed_at: new Date().toISOString()
+                });
+                
+                if (result.isOk) {
+                    showToast('تم حفظ النتيجة ✓');
+                }
+            }
+            
+            showSection('results');
+        }
+
+        function restartQuiz() {
+            startQuiz(currentModel);
+        }
+
+        async function loadResults() {
+            if (!window.dataSdk) {
+                document.getElementById('results-list').innerHTML = '<p class="text-center text-slate-500">لا توجد نتائج</p>';
+                return;
+            }
+            
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '<p class="text-center text-slate-500">جاري التحميل...</p>';
+        }
+
+        const dataHandler = {
+            onDataChanged(data) {
+                const resultsList = document.getElementById('results-list');
+                if (!data || data.length === 0) {
+                    resultsList.innerHTML = '<div class="text-center text-slate-500 py-12"><p class="text-lg">لا توجد نتائج بعد</p></div>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach((result, idx) => {
+                    const percentage = parseInt(result.percentage) || 0;
+                    const date = new Date(result.completed_at).toLocaleDateString('ar-SA');
+                    const color = percentage >= 80 ? 'green' : percentage >= 60 ? 'yellow' : 'red';
+                    
+                    html += `
+                        <div class="bg-white rounded-xl shadow-md p-6 border-r-4 border-${color}-500">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-800">${result.student_name}</h3>
+                                    <p class="text-slate-500 text-sm">النموذج ${result.model_number}</p>
+                                </div>
+                                <span class="text-2xl font-bold text-${color}-600">${result.percentage}%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-slate-600">الدرجة: ${result.score}</p>
+                                <p class="text-slate-500 text-sm">${date}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                resultsList.innerHTML = html;
+            }
+        };
+
+        async function initDataSDK() {
+            if (window.dataSdk) {
+                await window.dataSdk.init(dataHandler);
+            }
+        }
+
+        async function onConfigChange(newConfig) {
+            document.getElementById('site-title').textContent = '📚 ' + (newConfig.site_title || defaultConfig.site_title);
+        }
+
+        function mapToCapabilities() {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(cfg) {
+            return new Map([
+                ['site_title', cfg.site_title || defaultConfig.site_title]
+            ]);
+        }
+
+        async function init() {
+            generateModelsGrid();
+            
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+                config = window.elementSdk.config || defaultConfig;
+            }
+            
+            await initDataSDK();
+            await onConfigChange(config);
+        }
+
+        init();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ced158231b1977e',t:'MTc3MTI0NTMxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
