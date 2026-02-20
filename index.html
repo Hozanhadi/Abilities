@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة القدرات اللفظي</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Tajawal', sans-serif; }
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    .card-gradient {
+      background: linear-gradient(145deg, #1e2a4a 0%, #243b55 100%);
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%);
+    }
+    .question-card {
+      transition: all 0.3s ease;
+    }
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(247, 183, 51, 0.2);
+    }
+    .nav-item {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f7b733, #fc4a1a);
+      transition: width 0.3s ease;
+    }
+    .nav-item:hover::after, .nav-item.active::after {
+      width: 100%;
+    }
+    .model-btn {
+      transition: all 0.3s ease;
+    }
+    .model-btn:hover {
+      transform: scale(1.05);
+    }
+    .model-btn.completed {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: #1a1a2e;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #f7b733;
+      border-radius: 3px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full gradient-bg text-white overflow-auto scrollbar-thin"><!-- Login Screen -->
+  <div id="loginScreen" class="h-full flex items-center justify-center p-4">
+   <div class="card-gradient rounded-3xl p-8 md:p-12 w-full max-w-md shadow-2xl animate-fade-in">
+    <div class="text-center mb-8">
+     <div class="w-24 h-24 mx-auto mb-6 gold-gradient rounded-full flex items-center justify-center">
+      <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+     </div>
+     <h1 id="loginTitle" class="text-3xl font-bold mb-2">منصة القدرات اللفظي</h1>
+     <p class="text-gray-400">أدخل بياناتك للمتابعة</p>
+    </div>
+    <form id="loginForm" class="space-y-6">
+     <div><label class="block text-sm font-medium mb-2 text-gray-300">الاسم الكامل</label> <input type="text" id="studentName" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" placeholder="أدخل اسمك هنا">
+     </div>
+     <div><label class="block text-sm font-medium mb-2 text-gray-300">كلمة المرور</label> <input type="password" id="password" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" placeholder="أدخل كلمة المرور">
+     </div>
+     <div id="loginError" class="hidden text-red-400 text-sm text-center bg-red-500/10 p-3 rounded-lg">
+      كلمة المرور غير صحيحة
+     </div><button type="submit" class="w-full py-4 gold-gradient rounded-xl font-bold text-lg hover:opacity-90 transition-all transform hover:scale-[1.02] shadow-lg"> دخول المنصة </button>
+    </form>
+   </div>
+  </div><!-- Main App -->
+  <div id="mainApp" class="hidden h-full flex flex-col"><!-- Header -->
+   <header class="card-gradient border-b border-slate-700/50 px-4 md:px-8 py-4">
+    <div class="flex items-center justify-between">
+     <div class="flex items-center gap-4">
+      <div class="w-12 h-12 gold-gradient rounded-xl flex items-center justify-center">
+       <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+       </svg>
+      </div>
+      <div>
+       <h1 id="mainTitle" class="text-xl font-bold">منصة القدرات اللفظي</h1>
+       <p class="text-sm text-gray-400">مرحباً، <span id="welcomeName"></span></p>
+      </div>
+     </div><button id="logoutBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-all text-sm"> تسجيل خروج </button>
+    </div><!-- Navigation -->
+    <nav class="flex gap-6 mt-4 overflow-x-auto pb-2"><button class="nav-item active text-amber-400 font-medium whitespace-nowrap" data-section="home">الرئيسية</button> <button class="nav-item text-gray-400 hover:text-white font-medium whitespace-nowrap" data-section="explanation">الشرح</button> <button class="nav-item text-gray-400 hover:text-white font-medium whitespace-nowrap" data-section="models">النماذج (55)</button> <button class="nav-item text-gray-400 hover:text-white font-medium whitespace-nowrap" data-section="students">الطلاب المسجلين</button>
+    </nav>
+   </header><!-- Content -->
+   <main class="flex-1 overflow-auto p-4 md:p-8"><!-- Home Section -->
+    <section id="homeSection" class="animate-fade-in">
+     <div class="text-center mb-8">
+      <h2 id="welcomeMessage" class="text-3xl md:text-4xl font-bold mb-4">مرحباً بك في منصة القدرات اللفظي</h2>
+      <p class="text-gray-400 text-lg">اختر من الأقسام أدناه للبدء</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div class="card-gradient rounded-2xl p-6 text-center question-card cursor-pointer" onclick="showSection('explanation')">
+       <div class="w-16 h-16 mx-auto mb-4 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+        <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">الشرح المفصل</h3>
+       <p class="text-gray-400 text-sm">تعرف على أنواع الأسئلة وطرق الحل</p>
+      </div>
+      <div class="card-gradient rounded-2xl p-6 text-center question-card cursor-pointer" onclick="showSection('models')">
+       <div class="w-16 h-16 mx-auto mb-4 bg-amber-500/20 rounded-2xl flex items-center justify-center">
+        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">55 نموذج</h3>
+       <p class="text-gray-400 text-sm">أسئلة متكررة مع الإجابات</p>
+      </div>
+      <div class="card-gradient rounded-2xl p-6 text-center question-card cursor-pointer" onclick="showSection('students')">
+       <div class="w-16 h-16 mx-auto mb-4 bg-green-500/20 rounded-2xl flex items-center justify-center">
+        <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">الطلاب المسجلين</h3>
+       <p class="text-gray-400 text-sm">عرض قائمة المتدربين</p>
+      </div>
+     </div>
+    </section><!-- Explanation Section -->
+    <section id="explanationSection" class="hidden animate-fade-in max-w-4xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">شرح القدرات اللفظي</h2>
+     <div class="space-y-6"><!-- التناظر اللفظي -->
+      <div class="card-gradient rounded-2xl p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center"><span class="text-purple-400 font-bold">1</span>
+        </div>
+        <h3 class="text-xl font-bold text-purple-400">التناظر اللفظي</h3>
+       </div>
+       <p class="text-gray-300 mb-4 leading-relaxed">التناظر اللفظي هو إيجاد العلاقة بين كلمتين ثم البحث عن نفس العلاقة في الخيارات المعطاة.</p>
+       <div class="bg-slate-800/50 rounded-xl p-4">
+        <p class="text-amber-400 font-medium mb-2">أنواع العلاقات الشائعة:</p>
+        <ul class="text-gray-300 space-y-2 text-sm">
+         <li>• <span class="text-blue-400">علاقة الجزء بالكل:</span> إصبع : يد = ورقة : شجرة</li>
+         <li>• <span class="text-blue-400">علاقة المترادفات:</span> سعيد : فرح = حزين : كئيب</li>
+         <li>• <span class="text-blue-400">علاقة الأضداد:</span> ليل : نهار = حار : بارد</li>
+         <li>• <span class="text-blue-400">علاقة الوظيفة:</span> طبيب : علاج = معلم : تعليم</li>
+         <li>• <span class="text-blue-400">علاقة المكان:</span> طالب : مدرسة = مريض : مستشفى</li>
+        </ul>
+       </div>
+      </div><!-- إكمال الجمل -->
+      <div class="card-gradient rounded-2xl p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center"><span class="text-blue-400 font-bold">2</span>
+        </div>
+        <h3 class="text-xl font-bold text-blue-400">إكمال الجمل</h3>
+       </div>
+       <p class="text-gray-300 mb-4 leading-relaxed">يتطلب هذا النوع اختيار الكلمة أو الكلمات المناسبة لإكمال الجملة بشكل صحيح ومنطقي.</p>
+       <div class="bg-slate-800/50 rounded-xl p-4">
+        <p class="text-amber-400 font-medium mb-2">استراتيجيات الحل:</p>
+        <ul class="text-gray-300 space-y-2 text-sm">
+         <li>• اقرأ الجملة كاملة لفهم السياق العام</li>
+         <li>• حدد نوع الكلمة المطلوبة (اسم، فعل، صفة)</li>
+         <li>• انتبه للروابط اللغوية (لكن، لأن، حتى)</li>
+         <li>• جرب كل خيار في الفراغ واختر الأنسب</li>
+        </ul>
+       </div>
+      </div><!-- استيعاب المقروء -->
+      <div class="card-gradient rounded-2xl p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center"><span class="text-green-400 font-bold">3</span>
+        </div>
+        <h3 class="text-xl font-bold text-green-400">استيعاب المقروء</h3>
+       </div>
+       <p class="text-gray-300 mb-4 leading-relaxed">قراءة نص وفهمه ثم الإجابة عن أسئلة تتعلق بمحتواه والأفكار الرئيسية والتفاصيل.</p>
+       <div class="bg-slate-800/50 rounded-xl p-4">
+        <p class="text-amber-400 font-medium mb-2">نصائح مهمة:</p>
+        <ul class="text-gray-300 space-y-2 text-sm">
+         <li>• اقرأ الأسئلة أولاً قبل قراءة النص</li>
+         <li>• حدد الفكرة الرئيسية لكل فقرة</li>
+         <li>• ابحث عن الكلمات المفتاحية في السؤال</li>
+         <li>• لا تعتمد على معلوماتك الخارجية</li>
+        </ul>
+       </div>
+      </div><!-- الخطأ السياقي -->
+      <div class="card-gradient rounded-2xl p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center"><span class="text-red-400 font-bold">4</span>
+        </div>
+        <h3 class="text-xl font-bold text-red-400">الخطأ السياقي</h3>
+       </div>
+       <p class="text-gray-300 mb-4 leading-relaxed">تحديد الكلمة التي لا تتناسب مع سياق الجملة من بين الكلمات المحددة.</p>
+       <div class="bg-slate-800/50 rounded-xl p-4">
+        <p class="text-amber-400 font-medium mb-2">طريقة الحل:</p>
+        <ul class="text-gray-300 space-y-2 text-sm">
+         <li>• افهم المعنى العام للجملة</li>
+         <li>• ابحث عن الكلمة التي تعطي معنى معاكساً أو غير منطقي</li>
+         <li>• عادة ما تكون الكلمة الخاطئة ضد المعنى المطلوب</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </section><!-- Models Section -->
+    <section id="modelsSection" class="hidden animate-fade-in">
+     <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">نماذج الأسئلة المتكررة</h2><!-- Model Categories -->
+     <div class="flex flex-wrap gap-3 justify-center mb-6"><button class="model-category px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg font-medium" data-cat="all">الكل (55)</button> <button class="model-category px-4 py-2 bg-slate-700 text-gray-300 rounded-lg font-medium" data-cat="analogy">التناظر (15)</button> <button class="model-category px-4 py-2 bg-slate-700 text-gray-300 rounded-lg font-medium" data-cat="completion">إكمال الجمل (15)</button> <button class="model-category px-4 py-2 bg-slate-700 text-gray-300 rounded-lg font-medium" data-cat="reading">استيعاب المقروء (15)</button> <button class="model-category px-4 py-2 bg-slate-700 text-gray-300 rounded-lg font-medium" data-cat="context">الخطأ السياقي (10)</button>
+     </div><!-- Questions Container -->
+     <div id="questionsContainer" class="grid gap-4 max-w-4xl mx-auto"><!-- Questions will be loaded here -->
+     </div>
+    </section><!-- Students Section -->
+    <section id="studentsSection" class="hidden animate-fade-in max-w-2xl mx-auto">
+     <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">الطلاب المسجلين</h2>
+     <div id="studentsLoading" class="text-center py-8">
+      <div class="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p class="text-gray-400">جاري التحميل...</p>
+     </div>
+     <div id="studentsList" class="space-y-3"><!-- Students will be loaded here -->
+     </div>
+     <div id="noStudents" class="hidden text-center py-12">
+      <div class="w-20 h-20 mx-auto mb-4 bg-slate-700 rounded-full flex items-center justify-center">
+       <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+       </svg>
+      </div>
+      <p class="text-gray-400 text-lg">لا يوجد طلاب مسجلين بعد</p>
+     </div>
+    </section><!-- Question Detail Modal -->
+    <div id="questionModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+     <div class="card-gradient rounded-2xl p-6 md:p-8 max-w-2xl w-full max-h-[90%] overflow-auto">
+      <div class="flex items-center justify-between mb-6">
+       <h3 id="modalTitle" class="text-xl font-bold text-amber-400">السؤال</h3><button onclick="closeModal()" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+      </div>
+      <div id="modalContent"><!-- Question content will be loaded here -->
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script>
+    // Configuration
+    const defaultConfig = {
+      site_title: 'منصة القدرات اللفظي',
+      welcome_message: 'مرحباً بك في منصة القدرات اللفظي'
+    };
+    
+    let config = { ...defaultConfig };
+    let studentsData = [];
+    let currentStudent = '';
+    
+    // Questions Database - 55 Questions
+    const questionsDB = [
+      // التناظر اللفظي (15 سؤال)
+      { id: 1, cat: 'analogy', q: 'قلم : كتابة', options: ['سكين : قطع', 'كتاب : ورق', 'باب : خشب', 'نافذة : زجاج'], answer: 0, explain: 'العلاقة هي علاقة الأداة بوظيفتها. القلم أداة للكتابة، والسكين أداة للقطع.' },
+      { id: 2, cat: 'analogy', q: 'طبيب : مستشفى', options: ['معلم : مدرسة', 'كتاب : مكتبة', 'طعام : مطبخ', 'سيارة : شارع'], answer: 0, explain: 'العلاقة هي علاقة العامل بمكان عمله. الطبيب يعمل في المستشفى، والمعلم يعمل في المدرسة.' },
+      { id: 3, cat: 'analogy', q: 'شمس : نهار', options: ['قمر : ليل', 'نجم : سماء', 'غيم : مطر', 'برق : رعد'], answer: 0, explain: 'العلاقة هي الارتباط الزمني. الشمس مرتبطة بالنهار، والقمر مرتبط بالليل.' },
+      { id: 4, cat: 'analogy', q: 'عين : إبصار', options: ['أذن : سمع', 'قدم : مشي', 'يد : كتابة', 'فم : أكل'], answer: 0, explain: 'العلاقة هي العضو ووظيفته الأساسية. العين للإبصار، والأذن للسمع.' },
+      { id: 5, cat: 'analogy', q: 'أسد : غابة', options: ['سمكة : بحر', 'طائر : سماء', 'إنسان : مدينة', 'نحلة : زهرة'], answer: 0, explain: 'العلاقة هي الكائن وموطنه الطبيعي. الأسد يعيش في الغابة، والسمكة تعيش في البحر.' },
+      { id: 6, cat: 'analogy', q: 'جوع : طعام', options: ['عطش : ماء', 'نوم : سرير', 'برد : ملابس', 'مرض : دواء'], answer: 0, explain: 'العلاقة هي الحاجة وما يسدها. الجوع يسده الطعام، والعطش يسده الماء.' },
+      { id: 7, cat: 'analogy', q: 'كتاب : صفحات', options: ['شجرة : أوراق', 'بيت : غرف', 'سيارة : عجلات', 'إنسان : أعضاء'], answer: 0, explain: 'العلاقة هي الكل والجزء. الكتاب يتكون من صفحات، والشجرة تتكون من أوراق.' },
+      { id: 8, cat: 'analogy', q: 'فرح : حزن', options: ['حب : كره', 'نور : شمس', 'صوت : سمع', 'لون : عين'], answer: 0, explain: 'العلاقة هي التضاد. الفرح عكس الحزن، والحب عكس الكره.' },
+      { id: 9, cat: 'analogy', q: 'نحلة : عسل', options: ['بقرة : حليب', 'دجاجة : ريش', 'خروف : لحم', 'حصان : سرعة'], answer: 0, explain: 'العلاقة هي الكائن ومنتجه. النحلة تنتج العسل، والبقرة تنتج الحليب.' },
+      { id: 10, cat: 'analogy', q: 'ماء : سائل', options: ['ثلج : صلب', 'هواء : خفيف', 'نار : حرارة', 'تراب : جاف'], answer: 0, explain: 'العلاقة هي المادة وحالتها الفيزيائية. الماء في حالته السائلة، والثلج في حالته الصلبة.' },
+      { id: 11, cat: 'analogy', q: 'قراءة : كتاب', options: ['استماع : موسيقى', 'كتابة : قلم', 'رسم : لوحة', 'طبخ : طعام'], answer: 0, explain: 'العلاقة هي الفعل والمفعول به. نقرأ الكتاب، ونستمع للموسيقى.' },
+      { id: 12, cat: 'analogy', q: 'طائرة : مطار', options: ['سفينة : ميناء', 'قطار : سكة', 'سيارة : شارع', 'دراجة : رصيف'], answer: 0, explain: 'العلاقة هي وسيلة النقل ومحطتها. الطائرة تقلع من المطار، والسفينة ترسو في الميناء.' },
+      { id: 13, cat: 'analogy', q: 'شتاء : بارد', options: ['صيف : حار', 'ربيع : جميل', 'خريف : أوراق', 'ليل : مظلم'], answer: 0, explain: 'العلاقة هي الفصل وصفته المميزة. الشتاء بارد، والصيف حار.' },
+      { id: 14, cat: 'analogy', q: 'ورقة : شجرة', options: ['ريشة : طائر', 'شعر : رأس', 'إصبع : يد', 'سن : فم'], answer: 0, explain: 'العلاقة هي الجزء والكل. الورقة جزء من الشجرة، والريشة جزء من الطائر.' },
+      { id: 15, cat: 'analogy', q: 'مهندس : بناء', options: ['طباخ : طبخ', 'رسام : لون', 'كاتب : قلم', 'مزارع : أرض'], answer: 0, explain: 'العلاقة هي المهنة والعمل. المهندس يقوم بالبناء، والطباخ يقوم بالطبخ.' },
+      
+      // إكمال الجمل (15 سؤال)
+      { id: 16, cat: 'completion', q: 'العلم نور و_______ ظلام', options: ['الجهل', 'الليل', 'الكسل', 'النوم'], answer: 0, explain: 'الجهل هو عكس العلم، وكما أن العلم نور فالجهل ظلام. هذه مقابلة بلاغية شائعة.' },
+      { id: 17, cat: 'completion', q: 'من جد _______', options: ['وجد', 'تعب', 'نجح', 'فاز'], answer: 0, explain: 'هذا مثل عربي شهير "من جد وجد" أي من اجتهد حقق ما يريد.' },
+      { id: 18, cat: 'completion', q: 'الصبر مفتاح _______', options: ['الفرج', 'النجاح', 'السعادة', 'الحياة'], answer: 0, explain: 'هذا مثل شائع يعني أن الصبر يؤدي إلى الفرج وزوال الهم.' },
+      { id: 19, cat: 'completion', q: 'القراءة _______ للعقل', options: ['غذاء', 'ماء', 'هواء', 'نور'], answer: 0, explain: 'تشبيه شائع يصف القراءة بأنها غذاء للعقل كما الطعام غذاء للجسم.' },
+      { id: 20, cat: 'completion', q: 'الوقت كالسيف إن لم تقطعه _______', options: ['قطعك', 'ضاع', 'مر', 'انتهى'], answer: 0, explain: 'حكمة عربية تحث على استغلال الوقت، فإن لم تستغله فسيذهب بدون فائدة.' },
+      { id: 21, cat: 'completion', q: 'رحلة الألف ميل تبدأ بـ_______', options: ['خطوة', 'فكرة', 'حلم', 'أمل'], answer: 0, explain: 'حكمة صينية شهيرة تعني أن كل إنجاز كبير يبدأ بخطوة صغيرة.' },
+      { id: 22, cat: 'completion', q: 'الصديق وقت _______', options: ['الضيق', 'الفرح', 'الحاجة', 'الشدة'], answer: 0, explain: 'مثل عربي يعني أن الصديق الحقيقي يظهر في الأوقات الصعبة.' },
+      { id: 23, cat: 'completion', q: 'العقل السليم في الجسم _______', options: ['السليم', 'القوي', 'الصحيح', 'المعافى'], answer: 0, explain: 'مقولة لاتينية شهيرة تؤكد العلاقة بين صحة الجسم وصحة العقل.' },
+      { id: 24, cat: 'completion', q: 'كلما زاد علم المرء زاد _______', options: ['تواضعه', 'غروره', 'كبره', 'علمه'], answer: 0, explain: 'حكمة تعني أن العلم الحقيقي يجعل الإنسان أكثر تواضعاً.' },
+      { id: 25, cat: 'completion', q: 'الحاجة أم _______', options: ['الاختراع', 'الإبداع', 'العمل', 'الفكر'], answer: 0, explain: 'مثل يعني أن الحاجة تدفع الإنسان للابتكار وإيجاد الحلول.' },
+      { id: 26, cat: 'completion', q: 'اطلبوا العلم من المهد إلى _______', options: ['اللحد', 'الممات', 'النهاية', 'الأبد'], answer: 0, explain: 'حديث يحث على طلب العلم طوال الحياة.' },
+      { id: 27, cat: 'completion', q: 'خير الكلام ما قل و_______', options: ['دل', 'نفع', 'أفاد', 'صدق'], answer: 0, explain: 'حكمة عربية تعني أن أفضل الكلام هو المختصر المفيد.' },
+      { id: 28, cat: 'completion', q: 'لا يلدغ المؤمن من جحر _______', options: ['مرتين', 'واحد', 'ثانية', 'أخرى'], answer: 0, explain: 'حديث نبوي يحث على التعلم من الأخطاء وعدم تكرارها.' },
+      { id: 29, cat: 'completion', q: 'التعليم في الصغر كالنقش على _______', options: ['الحجر', 'الصخر', 'الجدار', 'الورق'], answer: 0, explain: 'مثل يعني أن ما يتعلمه الإنسان في صغره يبقى راسخاً.' },
+      { id: 30, cat: 'completion', q: 'الصحة _______ لا يعرفها إلا المريض', options: ['تاج', 'نعمة', 'كنز', 'هدية'], answer: 0, explain: 'حكمة تصف الصحة بالتاج على رؤوس الأصحاء.' },
+      
+      // استيعاب المقروء (15 سؤال)
+      { id: 31, cat: 'reading', q: 'النص: "يعد الماء من أهم العناصر للحياة، فهو يشكل 70% من جسم الإنسان. ينصح الأطباء بشرب 8 أكواب يومياً." - ما نسبة الماء في جسم الإنسان؟', options: ['70%', '80%', '60%', '50%'], answer: 0, explain: 'الإجابة مذكورة صراحة في النص: "يشكل 70% من جسم الإنسان".' },
+      { id: 32, cat: 'reading', q: 'النص: "تأسست المملكة العربية السعودية عام 1932م على يد الملك عبدالعزيز." - متى تأسست المملكة؟', options: ['1932م', '1923م', '1942م', '1952م'], answer: 0, explain: 'التاريخ مذكور صراحة في النص: "عام 1932م".' },
+      { id: 33, cat: 'reading', q: 'النص: "النحل حشرة نافعة تنتج العسل الذي يحتوي على فوائد صحية كثيرة." - ما الفكرة الرئيسية؟', options: ['فوائد النحل', 'أنواع الحشرات', 'صنع العسل', 'الفوائد الصحية'], answer: 0, explain: 'الفكرة الرئيسية هي فوائد النحل لأن النص يتحدث عن نفع النحل.' },
+      { id: 34, cat: 'reading', q: 'النص: "الرياضة تقوي الجسم وتنشط العقل وتحسن المزاج." - كم فائدة للرياضة ذُكرت؟', options: ['ثلاث فوائد', 'فائدتان', 'أربع فوائد', 'فائدة واحدة'], answer: 0, explain: 'ذكر النص ثلاث فوائد: تقوية الجسم، تنشيط العقل، تحسين المزاج.' },
+      { id: 35, cat: 'reading', q: 'النص: "الصدق منجاة والكذب مهلكة، لذا يجب التحلي بالصدق." - ما نصيحة الكاتب؟', options: ['التحلي بالصدق', 'تجنب الكذب', 'الحذر من الناس', 'قول الحق'], answer: 0, explain: 'النصيحة واضحة في النص: "يجب التحلي بالصدق".' },
+      { id: 36, cat: 'reading', q: 'النص: "المملكة العربية السعودية أكبر دول الخليج مساحة، وتقع في قلب العالم." - ما موقع المملكة؟', options: ['قلب العالم', 'شرق آسيا', 'شمال أفريقيا', 'غرب أوروبا'], answer: 0, explain: 'الموقع مذكور في النص: "تقع في قلب العالم".' },
+      { id: 37, cat: 'reading', q: 'النص: "القمر يدور حول الأرض، والأرض تدور حول الشمس." - ما الذي يدور حول الأرض؟', options: ['القمر', 'الشمس', 'النجوم', 'الكواكب'], answer: 0, explain: 'مذكور صراحة: "القمر يدور حول الأرض".' },
+      { id: 38, cat: 'reading', q: 'النص: "الأمانة من أهم الصفات، فهي أساس الثقة بين الناس." - لماذا الأمانة مهمة؟', options: ['أساس الثقة', 'تجلب المال', 'تزيد الأصدقاء', 'ترفع المكانة'], answer: 0, explain: 'السبب مذكور: "أساس الثقة بين الناس".' },
+      { id: 39, cat: 'reading', q: 'النص: "يتكون الماء من ذرتي هيدروجين وذرة أكسجين." - مما يتكون الماء؟', options: ['هيدروجين وأكسجين', 'كربون وأكسجين', 'نيتروجين وهيدروجين', 'كلور وصوديوم'], answer: 0, explain: 'التركيب مذكور: "ذرتي هيدروجين وذرة أكسجين".' },
+      { id: 40, cat: 'reading', q: 'النص: "الصلاة عماد الدين، من أقامها أقام الدين." - ما مكانة الصلاة؟', options: ['عماد الدين', 'ركن الإسلام', 'فرض كفاية', 'سنة مؤكدة'], answer: 0, explain: 'المكانة مذكورة: "عماد الدين".' },
+      { id: 41, cat: 'reading', q: 'النص: "تعد اللغة العربية من أقدم اللغات وأكثرها انتشاراً." - ما صفة اللغة العربية؟', options: ['قديمة ومنتشرة', 'صعبة ومعقدة', 'سهلة وبسيطة', 'نادرة ومحدودة'], answer: 0, explain: 'الصفات مذكورة: "أقدم اللغات وأكثرها انتشاراً".' },
+      { id: 42, cat: 'reading', q: 'النص: "النظافة من الإيمان، وهي سلوك حضاري يدل على رقي المجتمع." - ماذا تدل النظافة؟', options: ['رقي المجتمع', 'ثراء المجتمع', 'قوة المجتمع', 'تقدم المجتمع'], answer: 0, explain: 'الدلالة مذكورة: "تدل على رقي المجتمع".' },
+      { id: 43, cat: 'reading', q: 'النص: "الشمس نجم، والقمر كوكب يعكس ضوء الشمس." - ما طبيعة القمر؟', options: ['كوكب', 'نجم', 'مذنب', 'شهاب'], answer: 0, explain: 'مذكور صراحة: "القمر كوكب".' },
+      { id: 44, cat: 'reading', q: 'النص: "رؤية 2030 تهدف لتنويع مصادر الدخل وتقليل الاعتماد على النفط." - ما هدف رؤية 2030؟', options: ['تنويع الدخل', 'زيادة النفط', 'تصدير الغاز', 'استيراد التقنية'], answer: 0, explain: 'الهدف مذكور: "تنويع مصادر الدخل".' },
+      { id: 45, cat: 'reading', q: 'النص: "القهوة العربية رمز للكرم والضيافة في المجتمع السعودي." - ما رمزية القهوة؟', options: ['الكرم والضيافة', 'القوة والشجاعة', 'الثروة والغنى', 'العلم والمعرفة'], answer: 0, explain: 'الرمزية مذكورة: "رمز للكرم والضيافة".' },
+      
+      // الخطأ السياقي (10 أسئلة)
+      { id: 46, cat: 'context', q: 'حدد الكلمة الخاطئة: "الماء البارد يسخن في الشتاء"', options: ['يسخن', 'الماء', 'البارد', 'الشتاء'], answer: 0, explain: 'الخطأ في "يسخن" لأن الماء في الشتاء يبرد وليس يسخن.' },
+      { id: 47, cat: 'context', q: 'حدد الكلمة الخاطئة: "الطالب الكسول ينجح دائماً في الاختبارات"', options: ['ينجح', 'الطالب', 'الكسول', 'الاختبارات'], answer: 0, explain: 'الخطأ في "ينجح" لأن الكسول عادة لا ينجح، والصواب "يرسب".' },
+      { id: 48, cat: 'context', q: 'حدد الكلمة الخاطئة: "النار الباردة تحرق الأشياء"', options: ['الباردة', 'النار', 'تحرق', 'الأشياء'], answer: 0, explain: 'الخطأ في "الباردة" لأن النار حارة وليست باردة.' },
+      { id: 49, cat: 'context', q: 'حدد الكلمة الخاطئة: "الشمس تشرق من الغرب كل صباح"', options: ['الغرب', 'الشمس', 'تشرق', 'صباح'], answer: 0, explain: 'الخطأ في "الغرب" لأن الشمس تشرق من الشرق.' },
+      { id: 50, cat: 'context', q: 'حدد الكلمة الخاطئة: "السمك يعيش على اليابسة"', options: ['اليابسة', 'السمك', 'يعيش', 'على'], answer: 0, explain: 'الخطأ في "اليابسة" لأن السمك يعيش في الماء.' },
+      { id: 51, cat: 'context', q: 'حدد الكلمة الخاطئة: "الثلج الساخن يذوب بسرعة"', options: ['الساخن', 'الثلج', 'يذوب', 'بسرعة'], answer: 0, explain: 'الخطأ في "الساخن" لأن الثلج بارد وليس ساخناً.' },
+      { id: 52, cat: 'context', q: 'حدد الكلمة الخاطئة: "الليل المضيء مناسب للنوم"', options: ['المضيء', 'الليل', 'مناسب', 'النوم'], answer: 0, explain: 'الخطأ في "المضيء" لأن الليل مظلم وليس مضيئاً.' },
+      { id: 53, cat: 'context', q: 'حدد الكلمة الخاطئة: "الطائر السريع يمشي في السماء"', options: ['يمشي', 'الطائر', 'السريع', 'السماء'], answer: 0, explain: 'الخطأ في "يمشي" لأن الطائر يطير في السماء.' },
+      { id: 54, cat: 'context', q: 'حدد الكلمة الخاطئة: "العسل المر يستخدم للعلاج"', options: ['المر', 'العسل', 'يستخدم', 'العلاج'], answer: 0, explain: 'الخطأ في "المر" لأن العسل حلو وليس مراً.' },
+      { id: 55, cat: 'context', q: 'حدد الكلمة الخاطئة: "الصحراء الخضراء قليلة المياه"', options: ['الخضراء', 'الصحراء', 'قليلة', 'المياه'], answer: 0, explain: 'الخطأ في "الخضراء" لأن الصحراء جرداء وليست خضراء.' }
+    ];
+    
+    // Category labels
+    const categoryLabels = {
+      'analogy': 'التناظر اللفظي',
+      'completion': 'إكمال الجمل',
+      'reading': 'استيعاب المقروء',
+      'context': 'الخطأ السياقي'
+    };
+    
+    // Data SDK Handler
+    const dataHandler = {
+      onDataChanged(data) {
+        studentsData = data;
+        renderStudents();
+      }
+    };
+    
+    // Initialize SDKs
+    async function initApp() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (newConfig) => {
+            config = { ...defaultConfig, ...newConfig };
+            updateUI();
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ['site_title', cfg.site_title || defaultConfig.site_title],
+            ['welcome_message', cfg.welcome_message || defaultConfig.welcome_message]
+          ])
+        });
+      }
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to initialize data SDK');
+        }
+      }
+      
+      // Setup event listeners
+      setupEventListeners();
+      loadQuestions('all');
+    }
+    
+    function updateUI() {
+      document.getElementById('loginTitle').textContent = config.site_title || defaultConfig.site_title;
+      document.getElementById('mainTitle').textContent = config.site_title || defaultConfig.site_title;
+      document.getElementById('welcomeMessage').textContent = config.welcome_message || defaultConfig.welcome_message;
+    }
+    
+    function setupEventListeners() {
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('studentName').value.trim();
+        const password = document.getElementById('password').value;
+        
+        if (password !== '2010') {
+          document.getElementById('loginError').classList.remove('hidden');
+          return;
+        }
+        
+        document.getElementById('loginError').classList.add('hidden');
+        currentStudent = name;
+        
+        // Check if student exists
+        const existingStudent = studentsData.find(s => s.student_name === name);
+        if (!existingStudent && window.dataSdk && studentsData.length < 999) {
+          const result = await window.dataSdk.create({
+            student_name: name,
+            login_time: new Date().toISOString(),
+            score: 0
+          });
+        }
+        
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('welcomeName').textContent = name;
+      });
+      
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('studentName').value = '';
+        document.getElementById('password').value = '';
+        currentStudent = '';
+      });
+      
+      // Navigation
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          const section = e.target.dataset.section;
+          showSection(section);
+        });
+      });
+      
+      // Model categories
+      document.querySelectorAll('.model-category').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const cat = e.target.dataset.cat;
+          document.querySelectorAll('.model-category').forEach(b => {
+            b.classList.remove('bg-amber-500/20', 'text-amber-400');
+            b.classList.add('bg-slate-700', 'text-gray-300');
+          });
+          e.target.classList.remove('bg-slate-700', 'text-gray-300');
+          e.target.classList.add('bg-amber-500/20', 'text-amber-400');
+          loadQuestions(cat);
+        });
+      });
+    }
+    
+    function showSection(section) {
+      // Update nav
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active', 'text-amber-400');
+        item.classList.add('text-gray-400');
+      });
+      document.querySelector(`[data-section="${section}"]`).classList.add('active', 'text-amber-400');
+      document.querySelector(`[data-section="${section}"]`).classList.remove('text-gray-400');
+      
+      // Hide all sections
+      document.getElementById('homeSection').classList.add('hidden');
+      document.getElementById('explanationSection').classList.add('hidden');
+      document.getElementById('modelsSection').classList.add('hidden');
+      document.getElementById('studentsSection').classList.add('hidden');
+      
+      // Show selected section
+      document.getElementById(`${section}Section`).classList.remove('hidden');
+    }
+    
+    function loadQuestions(category) {
+      const container = document.getElementById('questionsContainer');
+      let filtered = category === 'all' ? questionsDB : questionsDB.filter(q => q.cat === category);
+      
+      container.innerHTML = filtered.map((q, idx) => `
+        <div class="card-gradient rounded-xl p-5 question-card cursor-pointer" onclick="openQuestion(${q.id})">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 text-xs font-medium rounded-full ${getCategoryColor(q.cat)}">${categoryLabels[q.cat]}</span>
+            <span class="text-gray-500 text-sm">سؤال ${q.id}</span>
+          </div>
+          <p class="text-gray-200 leading-relaxed">${q.q}</p>
+        </div>
+      `).join('');
+    }
+    
+    function getCategoryColor(cat) {
+      const colors = {
+        'analogy': 'bg-purple-500/20 text-purple-400',
+        'completion': 'bg-blue-500/20 text-blue-400',
+        'reading': 'bg-green-500/20 text-green-400',
+        'context': 'bg-red-500/20 text-red-400'
+      };
+      return colors[cat] || 'bg-gray-500/20 text-gray-400';
+    }
+    
+    function openQuestion(id) {
+      const q = questionsDB.find(item => item.id === id);
+      if (!q) return;
+      
+      document.getElementById('modalTitle').textContent = `سؤال ${id} - ${categoryLabels[q.cat]}`;
+      document.getElementById('modalContent').innerHTML = `
+        <div class="mb-6">
+          <p class="text-lg text-gray-200 mb-4">${q.q}</p>
+        </div>
+        <div class="space-y-3 mb-6" id="optionsContainer">
+          ${q.options.map((opt, idx) => `
+            <button class="w-full text-right px-4 py-3 rounded-xl border border-slate-600 hover:border-amber-500 transition-all option-btn" data-idx="${idx}" onclick="selectOption(${id}, ${idx})">
+              <span class="inline-block w-8 h-8 rounded-full bg-slate-700 text-center leading-8 ml-3">${['أ', 'ب', 'ج', 'د'][idx]}</span>
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div id="answerFeedback" class="hidden"></div>
+      `;
+      document.getElementById('questionModal').classList.remove('hidden');
+    }
+    
+    function selectOption(qId, optIdx) {
+      const q = questionsDB.find(item => item.id === qId);
+      const buttons = document.querySelectorAll('.option-btn');
+      const feedback = document.getElementById('answerFeedback');
+      
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answer) {
+          btn.classList.add('border-green-500', 'bg-green-500/20');
+        } else if (idx === optIdx && idx !== q.answer) {
+          btn.classList.add('border-red-500', 'bg-red-500/20');
+        }
+      });
+      
+      const isCorrect = optIdx === q.answer;
+      feedback.classList.remove('hidden');
+      feedback.innerHTML = `
+        <div class="p-4 rounded-xl ${isCorrect ? 'bg-green-500/20 border border-green-500' : 'bg-red-500/20 border border-red-500'}">
+          <p class="font-bold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}">
+            ${isCorrect ? '✓ إجابة صحيحة!' : '✗ إجابة خاطئة'}
+          </p>
+          <p class="text-gray-300 text-sm">${q.explain}</p>
+        </div>
+      `;
+    }
+    
+    function closeModal() {
+      document.getElementById('questionModal').classList.add('hidden');
+    }
+    
+    function renderStudents() {
+      const loading = document.getElementById('studentsLoading');
+      const list = document.getElementById('studentsList');
+      const noStudents = document.getElementById('noStudents');
+      
+      loading.classList.add('hidden');
+      
+      if (studentsData.length === 0) {
+        noStudents.classList.remove('hidden');
+        list.innerHTML = '';
+        return;
+      }
+      
+      noStudents.classList.add('hidden');
+      list.innerHTML = studentsData.map((student, idx) => `
+        <div class="card-gradient rounded-xl p-4 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center font-bold text-lg">
+              ${idx + 1}
+            </div>
+            <div>
+              <p class="font-bold text-lg">${student.student_name}</p>
+              <p class="text-gray-400 text-sm">${formatDate(student.login_time)}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function formatDate(isoString) {
+      if (!isoString) return 'غير محدد';
+      const date = new Date(isoString);
+      return date.toLocaleDateString('ar-SA', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    // Close modal on outside click
+    document.getElementById('questionModal').addEventListener('click', (e) => {
+      if (e.target.id === 'questionModal') {
+        closeModal();
+      }
+    });
+    
+    // Initialize app
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d1059a3f5032cfd',t:'MTc3MTYxNTExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
